@@ -78,13 +78,13 @@ var arWorldRoot = smoothedRoot
 var loader = new THREE.GLTFLoader();
 var mixer
 loader.load('../models/dancer/scene.gltf', function (gltf) {
-    var animations = gltf.animations;
+    // var animations = gltf.animations;
     var obj = gltf.scene;
     obj.rotation.x = Math.PI;
     obj.rotation.z = Math.PI;
     obj.scale.set(0.5, 0.5, 0.5);
-    mixer = new THREE.AnimationMixer(obj);
-    mixer.clipAction(animations[0]).play();
+    // mixer = new THREE.AnimationMixer(obj);
+    // mixer.clipAction(animations[0]).play();
 
     arWorldRoot.add(obj);
     onRenderFcts.push(function () {
@@ -112,8 +112,8 @@ requestAnimationFrame(function animate(nowMsec) {
         onRenderFct(deltaMsec / 1000, nowMsec / 1000)
     })
 
-    var delta = clock.getDelta();
-    if (mixer !== undefined) {
-        mixer.update(delta);
-    }
+    // var delta = clock.getDelta();
+    // if (mixer !== undefined) {
+    //     mixer.update(delta);
+    // }
 })
