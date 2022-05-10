@@ -108,9 +108,9 @@ loader.load('../models/dancer/scene.gltf', function (gltf) {
     var avatar = gltf.scene;
     avatar.rotateX(Math.PI/2);
     // avatar.rotation.z = Math.PI;
-    avatar.scale.set(0.05, 0.05, 0.05);
-    mixer = new THREE.AnimationMixer(avatar);
-    mixer.clipAction(animations[0]).play();
+    avatar.scale.set(0.02, 0.02, 0.02);
+    // mixer = new THREE.AnimationMixer(avatar);
+    // mixer.clipAction(animations[0]).play();
 
     arWorldRoot.add(avatar);
     // var action = mixer.clipAction(animations[0]).play();
@@ -126,13 +126,13 @@ onRenderFcts.push(function () {
     renderer.render(scene, camera);
     stats.update();
 
-    var delta = clock.getDelta();
+    // var delta = clock.getDelta();
 
-    if (typeof mixer !== 'undefined') {
+    // if (typeof mixer !== 'undefined') {
 
-        mixer.update(delta);
+    //     mixer.update(delta);
 
-    }
+    // }
 })
 
 //行程渲染事件环路
