@@ -6,7 +6,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.domElement.style.position = 'absolute';
 renderer.domElement.style.top = '0px';
 renderer.domElement.style.left = '0px';
-document.getElementById('container').appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
 
 var onRenderFcts = [];
 var scene = new THREE.Scene();
