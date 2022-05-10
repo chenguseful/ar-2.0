@@ -101,14 +101,16 @@ var arWorldRoot = smoothedRoot
 // arWorldRoot.add(mesh);
 
 var loader = new THREE.GLTFLoader();
+var mixer
 loader.load('../models/dancer/scene.gltf', function (gltf) {
     // var animations = collada.animations;
     //调整对象状态
     var avatar = gltf.scene;
-    // avatar.rotation.x = Math.PI;
+    avatar.rotateX(Math.PI/2);
     // avatar.rotation.z = Math.PI;
     avatar.scale.set(0.05, 0.05, 0.05);
-    // mixer = new THREE.AnimationMixer(avatar);
+    mixer = new THREE.AnimationMixer(avatar);
+    mixer.clipAction(animations[0]).play();
 
     arWorldRoot.add(avatar);
     // var action = mixer.clipAction(animations[0]).play();
@@ -118,10 +120,19 @@ loader.load('../models/dancer/scene.gltf', function (gltf) {
 var stats = new Stats();
 document.body.appendChild(stats.dom);
 
+var clock = new THREE.Clock();
 //renderer the scene
 onRenderFcts.push(function () {
     renderer.render(scene, camera);
     stats.update();
+
+    var delta = clock.getDelta();
+
+    if (typeof mixer !== 'undefined') {
+
+        mixer.update(delta);
+
+    }
 })
 
 //行程渲染事件环路
