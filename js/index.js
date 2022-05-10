@@ -105,16 +105,13 @@ loader.load('../models/dancer/scene.gltf', function (gltf) {
     // var animations = collada.animations;
     //调整对象状态
     var avatar = gltf.scene;
-    avatar.rotation.x = Math.PI;
-    avatar.rotation.z = Math.PI;
-    avatar.scale.set(0.5, 0.5, 0.5);
+    // avatar.rotation.x = Math.PI;
+    // avatar.rotation.z = Math.PI;
+    avatar.scale.set(0.05, 0.05, 0.05);
     // mixer = new THREE.AnimationMixer(avatar);
 
     arWorldRoot.add(avatar);
     // var action = mixer.clipAction(animations[0]).play();
-    onRenderFcts.push(function () {
-        avatar.rotation.z += 0.02 * Math.PI;
-    })
 });
 
 //渲染率查看器
