@@ -15,7 +15,7 @@ var onRenderFcts = [];
 //init scene and camera
 var scene = new THREE.Scene(); //初始化场景和环境
 
-var ambient = new THREE.AmbientLight(0x666666);
+var ambient = new THREE.AmbientLight(0xffffff);
 scene.add(ambient);
 
 var directctionalLight = new THREE.DirectionalLight(0x887766);
@@ -106,7 +106,7 @@ loader.load('../models/dancer/scene.gltf', function (gltf) {
     // var animations = collada.animations;
     //调整对象状态
     var avatar = gltf.scene;
-    // avatar.rotateX(Math.PI/2);
+    avatar.rotateX(Math.PI/2);
     // avatar.rotation.z = Math.PI;
     avatar.scale.set(0.02, 0.02, 0.02);
     // mixer = new THREE.AnimationMixer(avatar);
