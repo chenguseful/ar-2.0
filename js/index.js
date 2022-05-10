@@ -97,21 +97,21 @@ smoothedControls.addEventListener('becameVisible', function () {
 //添加物体
 var arWorldRoot = smoothedRoot
 
-var mesh = new THREE.AxisHelper();
-arWorldRoot.add(mesh);
+// var mesh = new THREE.AxisHelper();
+// arWorldRoot.add(mesh);
 
-var loader = new THREE.ColladaLoader();
-loader.load('../models/collada/stormtrooper/stormtrooper.dae', function (collada) {
-    var animations = collada.animations;
+var loader = new THREE.GLTFLoader();
+loader.load('../models/dancer/scene.gltf', function (gltf) {
+    // var animations = collada.animations;
     //调整对象状态
-    var avatar = collada.scene;
+    var avatar = gltf.scene;
     avatar.rotation.x = Math.PI;
     avatar.rotation.z = Math.PI;
     avatar.scale.set(0.5, 0.5, 0.5);
-    mixer = new THREE.AnimationMixer(avatar);
+    // mixer = new THREE.AnimationMixer(avatar);
 
     arWorldRoot.add(avatar);
-    var action = mixer.clipAction(animations[0]).play();
+    // var action = mixer.clipAction(animations[0]).play();
     onRenderFcts.push(function () {
         avatar.rotation.z += 0.02 * Math.PI;
     })
