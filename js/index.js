@@ -106,8 +106,9 @@ loader.load('../models/dancer/scene.gltf', function (gltf) {
     // var animations = collada.animations;
     //调整对象状态
     var avatar = gltf.scene;
-    avatar.rotateX(Math.PI/2);
+    avatar.rotateX(-Math.PI/2);
     // avatar.rotation.z = Math.PI;
+    // avatar.position.set(0,4,0)
     avatar.scale.set(0.02, 0.02, 0.02);
     // mixer = new THREE.AnimationMixer(avatar);
     // mixer.clipAction(animations[0]).play();
