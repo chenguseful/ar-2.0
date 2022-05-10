@@ -2,14 +2,19 @@ var renderer = new THREE.WebGLRenderer({
     alpha: true
 });
 renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+//renderer setPiexRatio(2);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.domElement.style.position = 'absolute';
 renderer.domElement.style.top = '0px';
 renderer.domElement.style.left = '0px';
 document.body.appendChild(renderer.domElement);
 
+//array of  functions for the rendering loop（渲染处理函数组初始化）
 var onRenderFcts = [];
-var scene = new THREE.Scene();
+
+//init scene and camera
+var scene = new THREE.Scene(); //初始化场景和环境
+
 var ambient = new THREE.AmbientLight(0x666666);
 scene.add(ambient);
 
@@ -17,9 +22,13 @@ var directctionalLight = new THREE.DirectionalLight(0x887766);
 directctionalLight.position.set(-1, 1, 1).normalize();
 scene.add(directctionalLight);
 
+//Initialize a basic camera
+
+//Create a camera（初始化相机添加到场景）
 var camera = new THREE.Camera();
 scene.add(camera);
 
+//handle arToolkitSource（调用打开相机事件，由THREEx提供）
 var arToolkitSource = new THREEx.ArToolkitSource({
     sourceType: 'webcam'
 })
@@ -28,6 +37,7 @@ arToolkitSource.init(function onReady() {
     onResize();
 })
 
+//handle resize(处理重新调整大小后正常显示)
 window.addEventListener('resize', function () {
     onResize();
 })
@@ -40,23 +50,30 @@ function onResize() {
     }
 }
 
+//create acToolkitContext
 var arToolkitContext = new THREEx.ArToolkitContext({
+    //相机参数设置
     cameraParametersUrl: '../data/camera_para.dat',
     detectionMode: 'mono',
     canvasWidth: 80 * 3,
     canvasHeight: 60 * 3,
     maxDetectionRate: 30
 })
+//initialize it
 arToolkitContext.init(function onCompleted() {
+    //copy projection matrix to camera
     camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
 });
+//update artoolkit on every frame
 onRenderFcts.push(function () {
     if (arToolkitSource.ready == false) return;
 
     arToolkitContext.update(arToolkitSource.domElement)
 })
 
-var markerRoot = new THREE.Group();
+//Create a ArMakerControls
+//创建一个Ar标记
+var markerRoot = new THREE.Group(); //用threejs的点集合初始化。
 scene.add(markerRoot);
 
 var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -70,50 +87,56 @@ var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
     lerpQuaternion: 0.3,
     lerpScale: 1
 })
-onRenderFcts.push(function () {
+onRenderFcts.push(function (delta) {
     smoothedControls.update(markerRoot)
 })
+smoothedControls.addEventListener('becameVisible', function () {
+    console.log('becameVisible event notified')
+})
+
+//添加物体
 var arWorldRoot = smoothedRoot
 
-var loader = new THREE.GLTFLoader();
-var mixer
-loader.load('../models/dancer/scene.gltf', function (gltf) {
-    // var animations = gltf.animations;
-    var obj = gltf.scene;
-    obj.rotation.x = Math.PI;
-    obj.rotation.z = Math.PI;
-    obj.scale.set(0.5, 0.5, 0.5);
-    // mixer = new THREE.AnimationMixer(obj);
-    // mixer.clipAction(animations[0]).play();
+var mesh = new THREE.AxisHelper();
+arWorldRoot.add(mesh);
 
-    arWorldRoot.add(obj);
+var loader = new THREE.ColladaLoader();
+loader.load('../models/collada/stormtrooper/stormtrooper.dae', function (collada) {
+    var animations = collada.animations;
+    //调整对象状态
+    var avatar = collada.scene;
+    avatar.rotation.x = Math.PI;
+    avatar.rotation.z = Math.PI;
+    avatar.scale.set(0.5, 0.5, 0.5);
+    mixer = new THREE.AnimationMixer(avatar);
+
+    arWorldRoot.add(avatar);
+    var action = mixer.clipAction(animations[0]).play();
     onRenderFcts.push(function () {
-        obj.rotation.z += 0.02 * Math.PI;
+        avatar.rotation.z += 0.02 * Math.PI;
     })
 });
 
+//渲染率查看器
 var stats = new Stats();
 document.body.appendChild(stats.dom);
 
+//renderer the scene
 onRenderFcts.push(function () {
     renderer.render(scene, camera);
     stats.update();
 })
 
+//行程渲染事件环路
 var lastTimeMsec = null;
-var clock = new THREE.Clock();
-
 requestAnimationFrame(function animate(nowMsec) {
+    //keep looping
     requestAnimationFrame(animate);
-
+    //measure time
     lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
     var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+    //call all each update function
     onRenderFcts.forEach(function (onRenderFct) {
         onRenderFct(deltaMsec / 1000, nowMsec / 1000)
     })
-
-    // var delta = clock.getDelta();
-    // if (mixer !== undefined) {
-    //     mixer.update(delta);
-    // }
 })
