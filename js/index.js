@@ -109,7 +109,7 @@ loader.load('../models/bird/scene.gltf', function (gltf) {
     avatar.rotateX(-Math.PI/2);
     // avatar.rotation.z = Math.PI;
     // avatar.position.set(0,4,0)
-    avatar.scale.set(10, 10, 10);
+    avatar.scale.set(1000, 1000, 1000);
     // mixer = new THREE.AnimationMixer(avatar);
     // mixer.clipAction(animations[0]).play();
 
