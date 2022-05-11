@@ -25,7 +25,7 @@ scene.add(directctionalLight);
 //Initialize a basic camera
 
 //Create a camera（初始化相机添加到场景）
-var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100000);
+var camera = new THREE.Camera();
 scene.add(camera);
 
 //handle arToolkitSource（调用打开相机事件，由THREEx提供）
