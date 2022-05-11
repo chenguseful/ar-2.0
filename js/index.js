@@ -106,10 +106,10 @@ loader.load('../models/plane/scene.gltf', function (gltf) {
     // var animations = collada.animations;
     //调整对象状态
     var avatar = gltf.scene;
-    // avatar.rotateX(-Math.PI/2);
+    avatar.rotateX(-Math.PI/2);
     // avatar.rotation.z = Math.PI;
     // avatar.position.set(0,4,0)
-    avatar.scale.set(10, 10, 10);
+    avatar.scale.set(0.1, 0.1, 0.1);
     // mixer = new THREE.AnimationMixer(avatar);
     // mixer.clipAction(animations[0]).play();
 
