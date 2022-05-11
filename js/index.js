@@ -25,7 +25,7 @@ scene.add(directctionalLight);
 //Initialize a basic camera
 
 //Create a camera（初始化相机添加到场景）
-var camera = new THREE.Camera();
+var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100000);
 scene.add(camera);
 
 //handle arToolkitSource（调用打开相机事件，由THREEx提供）
@@ -110,8 +110,8 @@ loader.load('../models/dancer/scene.gltf', function (gltf) {
     // avatar.rotation.z = Math.PI;
     // avatar.position.set(0,4,0)
     avatar.scale.set(0.02, 0.02, 0.02);
-    // mixer = new THREE.AnimationMixer(avatar);
-    // mixer.clipAction(animations[0]).play();
+    mixer = new THREE.AnimationMixer(avatar);
+    mixer.clipAction(animations[0]).play();
 
     arWorldRoot.add(avatar);
     // var action = mixer.clipAction(animations[0]).play();
@@ -127,13 +127,13 @@ onRenderFcts.push(function () {
     renderer.render(scene, camera);
     stats.update();
 
-    // var delta = clock.getDelta();
+    var delta = clock.getDelta();
 
-    // if (typeof mixer !== 'undefined') {
+    if (typeof mixer !== 'undefined') {
 
-    //     mixer.update(delta);
+        mixer.update(delta);
 
-    // }
+    }
 })
 
 //行程渲染事件环路
